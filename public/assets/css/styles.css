@@ -1,0 +1,112 @@
+.msgError{
+	color:#FF0000;
+}
+
+.msgSuccess{
+	color:#339900;
+}
+
+fieldset.fieldset_custom {
+    border: 1px groove #ddd !important;
+    padding: 0 15px 1px 15px !important;
+    /*margin: 0 0 5px 0 !important;*/
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend.fieldset_custom {
+	font-size: 14px !important;
+	text-align: left !important;
+	width:auto;
+	padding:0px;
+	margin-top:1px;
+	margin-bottom:1px;
+	border-bottom:none;
+}
+
+.container{
+    margin-top:20px;
+}
+
+.image-preview-input {
+    position: relative;
+    overflow: hidden;
+    margin: 0px;    
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;    
+}
+
+.image-preview-input input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+.image-preview-input-title {
+    margin-left:2px;
+}
+
+#custom-search-input {
+	margin:0;
+	margin-top: 10px;
+	padding: 0;
+}
+
+#custom-search-input .search-query {
+	padding-right: 3px;
+	padding-right: 4px \9;
+	padding-left: 3px;
+	padding-left: 4px \9;
+	/* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+	margin-bottom: 0;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+#custom-search-input button {
+	border: 0;
+	background: none;
+	/** belows styles are working good */
+	padding: 2px 5px;
+	margin-top: 2px;
+	position: relative;
+	left: -28px;
+	/* IE7-8 doesn't have border-radius, so don't indent the padding */
+	margin-bottom: 0;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	color:#D9230F;
+}
+
+.search-query:focus + button {
+	z-index: 3;   
+}
+
+/* Override fieldset styles */
+/*
+legend 
+{
+  width: auto;
+  padding: 0 5px;
+  margin-bottom: 0;
+  font-size: inherit;
+  line-height: inherit;
+  border-bottom: none;
+  text-align: left;
+}
+
+fieldset {
+    border: 2px groove threedface;
+    padding: 5px;
+}
+*/

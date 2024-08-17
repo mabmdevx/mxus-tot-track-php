@@ -1,0 +1,17 @@
+[site]
+SITE_TITLE      = Tot Track
+SITE_SHORT_NAME = Tot-Track
+HOME_PAGE       = index.php
+TIMEZONE        = America/Los_Angeles
+SYS_USER        = user1
+SYS_PASS        = xyz
+
+[database]
+DB_HOST     = localhost
+DB_NAME     = tot_track
+DB_USERNAME = dbuserxyz
+DB_PASSWORD = dbpasswordxyz
+
+[statcounter]
+STATCOUNTER_PROJECT=123
+STATCOUNTER_SECURITY=abc
