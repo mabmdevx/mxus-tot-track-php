@@ -437,6 +437,58 @@ function get_feed_side_percentage(){
     return $feed_side_pc_arr;
 }
 
+
+function get_count_of_sleep_sessions_for_date($date){
+
+    global $pdo;
+
+    $count_sleep_sessions_for_date = "0";
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("SELECT count(*) as count_sleep_sessions_for_date FROM tt_event_sessions WHERE tt_es_type='SLEEP' AND tt_es_date='".$date."'");
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result)){
+        $count_sleep_sessions_for_date = $result['count_sleep_sessions_for_date'];
+    }
+
+    return $count_sleep_sessions_for_date;
+
+}
+
+
+function get_total_sleep_duration_for_date($date){
+
+    global $pdo;
+
+    $total_sleep_duration_for_date_txt = "";
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("SELECT SUM(tt_es_time_duration) as duration FROM tt_event_sessions WHERE tt_es_type='SLEEP' AND tt_es_date='".$date."'");
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result)){
+        $total_sleep_duration_for_date_int = $result['duration'];
+        if($total_sleep_duration_for_date_int > 59){
+            $total_sleep_duration_for_date_hrs = floor($total_sleep_duration_for_date_int/60);
+            $total_sleep_duration_for_date_txt = $total_sleep_duration_for_date_hrs. " hour(s) ".($total_sleep_duration_for_date_int-($total_sleep_duration_for_date_hrs*60))." minute(s)";
+        } else {
+            $total_sleep_duration_for_date_txt = $total_sleep_duration_for_date_int." minute(s)";
+        }
+    }
+
+    return $total_sleep_duration_for_date_txt;
+
+}
+
 # }
 
 # Table List
@@ -527,8 +579,10 @@ function row_color_sessions($val){
 
     if($val === "FEED"){
         $color = "color:green";
+    } else if($val === "SLEEP"){
+        $color = "color:#0D47A1";
     } else if($val === "DIAPER_CHANGE"){
-        $color = "color:blue";
+        $color = "color:#6600CC";
     }
 
     return $color;
@@ -545,7 +599,11 @@ function row_color_events($val){
     } else if (str_contains($val, "SD") || str_contains($val, "STOP")) {
         $color = "color:brown";
     } else if (str_contains($val, "DC")) {
-        $color = "color:blue";
+        $color = "color:#6600CC";
+    } else if (str_contains($val, "SP1")) {
+        $color = "color:#0099CC";
+    } else if (str_contains($val, "SP0")) {
+        $color = "color:#0D47A1";
     } else {
         $color = "color:red";
     }

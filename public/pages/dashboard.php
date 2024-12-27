@@ -59,6 +59,12 @@ $count_diapers_pee_today = get_count_of_diapers_used_type_pee_for_date($now_date
 
 # Count of diapers used today - Poop
 $count_diapers_poop_today = get_count_of_diapers_used_type_poop_for_date($now_date_only);
+
+# Count of sleep sessions today
+$count_sleep_sessions_today = get_count_of_sleep_sessions_for_date($now_date_only);
+
+# Total sleep duration today
+$total_sleep_duration_today = get_total_sleep_duration_for_date($now_date_only);
 # }
 
 
@@ -78,6 +84,12 @@ $count_diapers_pee_yesterday = get_count_of_diapers_used_type_pee_for_date($yest
 
 # Count of diapers used yesterday - Poop
 $count_diapers_poop_yesterday = get_count_of_diapers_used_type_poop_for_date($yesterday_date_only);
+
+# Count of sleep sessions yesterday
+$count_sleep_sessions_yesterday = get_count_of_sleep_sessions_for_date($yesterday_date_only);
+
+# Total sleep duration yesterday
+$total_sleep_duration_yesterday = get_total_sleep_duration_for_date($yesterday_date_only);
 # }
 
 
@@ -149,6 +161,8 @@ $feed_side_pc_right = $feed_side_pc_arr[1];
                                 <li>Total count of diapers used: <b><?php echo $count_diapers_total_today; ?></b></li>
                                 <li>Count of diapers used - Pee: <b><?php echo $count_diapers_pee_today; ?></b></li>
                                 <li>Count of diapers used - Poop: <b><?php echo $count_diapers_poop_today; ?></b></li>
+                                <li>Total Sleep Sessions: <b><?php echo $count_sleep_sessions_today; ?></b></li>
+                                <li>Total Sleep Duration: <b><?php echo $total_sleep_duration_today; ?></b></li>
                             </ul>
                         </fieldset>
                         <br/>
@@ -160,6 +174,8 @@ $feed_side_pc_right = $feed_side_pc_arr[1];
                                 <li>Total count of diapers used: <b><?php echo $count_diapers_total_yesterday; ?></b></li>
                                 <li>Count of diapers used - Pee: <b><?php echo $count_diapers_pee_yesterday; ?></b></li>
                                 <li>Count of diapers used - Poop: <b><?php echo $count_diapers_poop_yesterday; ?></b></li>
+                                <li>Total Sleep Sessions: <b><?php echo $count_sleep_sessions_yesterday; ?></b></li>
+                                <li>Total Sleep Duration: <b><?php echo $total_sleep_duration_yesterday; ?></b></li>
                             </ul>
                         </fieldset>
                         <br/>

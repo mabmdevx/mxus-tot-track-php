@@ -125,6 +125,12 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
         } else if ($tt_val_param1 === "DC"){
             $tt_val_type = "DIAPER_CHANGE";
             $tt_val_expanded = $tt_val_type;
+        } else if ($tt_val_param1 === "SP1"){
+            $tt_val_type = "SLEEP_START";
+            $tt_val_expanded = $tt_val_type;
+        } else if ($tt_val_param1 === "SP0"){
+            $tt_val_type = "SLEEP_END";
+            $tt_val_expanded = $tt_val_type;
         }
         # Commented out - For testing only
         //echo $tt_val_type; echo "<br/>";
@@ -136,8 +142,8 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
 
         if (isset($tt_val_rd_param2b) && ($tt_val_rd_param2b === "NOW")){
             // Use current timestamp
-            $tt_timestamp = date("Y-m-d H:i");
-            $tt_time_only = date("H:i");
+            $tt_timestamp = date("Y-m-d H:i:s");
+            $tt_time_only = date("H:i:s");
         } else if (isset($tt_val_rd_param2b) && (strlen($tt_val_rd_param2b) > 0)){
             // Use user input timestamp
             $tt_timestamp = $tt_val_param2;
@@ -145,8 +151,8 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
             //$tt_timestamp = "2024-05-11"." ".$tt_val_param2; // For backfill only
         } else {
             // If no time was provided, automatically use current timestamp
-            $tt_timestamp = date("Y-m-d H:i");
-            $tt_time_only = date("H:i");
+            $tt_timestamp = date("Y-m-d H:i:s");
+            $tt_time_only = date("H:i:s");
         }
         $tt_val_expanded = $tt_val_expanded." | ".$tt_timestamp;
         # Commented out - For testing only
@@ -178,6 +184,8 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
         $tt_val_sess_type = "";
         if($tt_val_type === "FEED_START" || $tt_val_type === "FEED_STOP" || $tt_val_type === "FEED_SD"){
             $tt_val_sess_type = "FEED";
+        } else if($tt_val_type === "SLEEP_START" || $tt_val_type === "SLEEP_END"){
+            $tt_val_sess_type = "SLEEP";
         } else {
             $tt_val_sess_type = $tt_val_type;
         }
@@ -224,12 +232,81 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
                 // Get the last ID where stop info is empty
                 // {
                 // Prepare and execute the query
+                $stmt3 = $pdo->prepare("SELECT MAX(tt_es_id) AS max_id,
+                                            (SELECT tt_es_time_start
+                                            FROM tt_event_sessions
+                                            WHERE tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions)
+                                            ) AS max_tt_es_time_start
+                                        FROM tt_event_sessions WHERE tt_es_type = 'FEED' AND tt_es_time_end IS NULL");
+                $stmt3->execute();
+
+                // Fetch the result
+                $result = $stmt3->fetch(PDO::FETCH_ASSOC);
+
+                // Get the maximum ID
+                $max_id = $result['max_id'];
+
+                // Get the start time
+                $tt_es_time_start = $result['max_tt_es_time_start'];
+                // }
+
+                // Derive time diff for the session
+                $time_duration = 0;
+                $time1_ut = strtotime($tt_es_time_start);
+                $time2_ut = strtotime($tt_timestamp);
+                $time_diff = $time2_ut - $time1_ut;
+                $time_duration = $time_diff / 60;
+
+                # Commented out - For testing only
+                //echo "tt_es_time_start: ".$tt_es_time_start; echo "<br/>";
+                //echo "tt_es_time_end: ".$tt_timestamp; echo "<br/>";
+                //echo "time_diff: ".$time_diff; echo "<br/>";
+                //echo "time_duration: ".$time_duration; echo "<br/>";
+
+                // Self detach boolean flag
+                $sd_bool_flag = 0;
+                if($tt_val_type === "FEED_SD"){
+                    $sd_bool_flag = 1;
+                }
+
+                // Update event_sessions table with stop data
+                // Table2 - tt_event_sessions
+                // {
+                // Prepare the SQL statement
+                $stmt2b = $pdo->prepare("UPDATE tt_event_sessions
+                SET
+                    tt_es_event_id_end = :tt_es_event_id_end,
+                    tt_es_time_end = :tt_es_time_end,
+                    tt_es_time_duration = :tt_es_time_duration,
+                    tt_es_feed_self_detach = :tt_es_feed_self_detach,
+                    updated_on = :updated_on
+                WHERE
+                    tt_es_id = :tt_es_id;
+                ");
+
+                // Bind parameters
+                $stmt2b->bindParam(':tt_es_event_id_end', $qry1_last_insert_id);
+                $stmt2b->bindParam(':tt_es_time_end', $tt_timestamp);
+                $stmt2b->bindParam(':tt_es_time_duration', $time_duration);
+                $stmt2b->bindParam(':tt_es_feed_self_detach', $sd_bool_flag);
+                $stmt2b->bindParam(':updated_on', $now_timestamp);
+                $stmt2b->bindParam(':tt_es_id', $max_id);
+
+                // Execute the statement
+                $stmt2b->execute();
+                // }
+
+            } else if($tt_val_type === "SLEEP_END"){
+
+                // Get the last ID where stop info is empty
+                // {
+                // Prepare and execute the query
                 $stmt3 = $pdo->prepare("SELECT MAX(tt_es_id) AS max_id, 
                                             (SELECT tt_es_time_start 
                                             FROM tt_event_sessions 
                                             WHERE tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions)
                                             ) AS max_tt_es_time_start
-                                        FROM tt_event_sessions WHERE tt_es_time_end IS NULL");
+                                        FROM tt_event_sessions WHERE tt_es_type = 'SLEEP' AND tt_es_time_end IS NULL");
                 $stmt3->execute();
 
                 // Fetch the result
@@ -375,6 +452,12 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
                                     <br/>
                                     <input type="radio" id="tt_val_rd_param1_opt5" name="tt_val_rd_param1" value="DC">
                                     <label for="DC">DIAPER CHANGE (DC)</label>
+                                    <br/>
+                                    <input type="radio" id="tt_val_rd_param1_opt6" name="tt_val_rd_param1" value="SP1">
+                                    <label for="SP1">SLEEP START (SP1)</label>
+                                    <br/>
+                                    <input type="radio" id="tt_val_rd_param1_opt7" name="tt_val_rd_param1" value="SP0">
+                                    <label for="SP0">SLEEP END (SP0)</label>
                                 </fieldset>
                                 <br/>
                                 <fieldset id="tt_val_fs_param2a" class="fieldset_custom">
@@ -458,7 +541,7 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
                         <div>
                             <strong>Possible values:</strong>
                             <ul>
-                                <li>Param 1: { FL / FR / SD / STOP / DC }</li>
+                                <li>Param 1: { FL / FR / SD / STOP / DC / SP1 / SP0 }</li>
                                 <li>Param 2: { NOW / time }</li>
                                 <li>Param 3: { 1 / 2 / 3 }</li>
                             </ul>
@@ -473,6 +556,8 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
                                 <li>DC 14:30 1</li>
                                 <li>DC 14:30 2</li>
                                 <li>DC 14:30 3</li>
+                                <li>SP1 NOW</li>
+                                <li>SP0 NOW</li>
                             </ul>
                         </div>
 
