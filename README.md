@@ -2,7 +2,7 @@
 
 ## Description
 - Tot Track - A baby care journal and analytics webapp written in PHP.
-- Track feedings and diaper changes.
+- Track feedings, diaper changes and sleep.
 - Get analytics from the data entered.
 
 ## Tech Stack
