@@ -20,6 +20,8 @@ DC Type
 $msgError = ""; // Clear Error Msg
 $msgSuccess = ""; // Clear Success Msg
 
+$tt_val_txt_param2a = date("Y-m-d");
+
 if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_postbk'] == 1)){
 
     $tt_val = "";
@@ -30,7 +32,7 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
         $tt_val_rd_param1 = htmlentities(trim($_POST['tt_val_rd_param1']));
     }
 
-    $tt_val_txt_param2a = "";
+    $tt_val_txt_param2a = date("Y-m-d");
     if(isset($_POST['tt_val_txt_param2a'])){
         $tt_val_txt_param2a = htmlentities(trim($_POST['tt_val_txt_param2a']));
     }
@@ -462,7 +464,7 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
                                 <br/>
                                 <fieldset id="tt_val_fs_param2a" class="fieldset_custom">
                                     <legend class="fieldset_custom">Select the date</legend>
-                                    <input type="text" class="form-control" id="tt_val_txt_param2a" name="tt_val_txt_param2a" value="<?php echo date("Y-m-d"); ?>">
+                                    <input type="text" class="form-control" id="tt_val_txt_param2a" name="tt_val_txt_param2a" value="<?php echo $tt_val_txt_param2a; ?>">
                                 </fieldset>
                                 <br/>
                                 <fieldset id="tt_val_fs_param2b" class="fieldset_custom">

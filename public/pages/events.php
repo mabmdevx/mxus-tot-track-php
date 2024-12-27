@@ -1,6 +1,6 @@
 <?php
 
-$tt_filter_date = "";
+$tt_filter_date = date("Y-m-d");
 if(isset($_POST['tt_filter_date'])){
     $tt_filter_date = htmlentities(trim($_POST['tt_filter_date']));
 }
@@ -46,7 +46,7 @@ $events_list = list_events($tt_filter_date, $tt_filter_sort);
                                 <br/>
                                 <div class="form-group">
                                     <label>Date: </label>
-                                    <input id="tt_filter_date" name="tt_filter_date" class="form-control" type="text" placeholder="<date>" value="<?php echo date("Y-m-d"); ?>">
+                                    <input id="tt_filter_date" name="tt_filter_date" class="form-control" type="text" placeholder="<date>" value="<?php echo $tt_filter_date; ?>">
                                 </div>
                                 &nbsp;&nbsp;
                                 <div class="form-group">
