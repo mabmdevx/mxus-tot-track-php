@@ -1,5 +1,15 @@
 <?php
 
+// Get User ID of logged in user
+$tt_user_uuid = get_tt_user_uuid();
+$tt_user_id = get_tt_user_id($tt_user_uuid);
+
+// Get Baby ID of selected baby
+$tt_baby_uuid = get_selected_baby_by_user_uuid($tt_user_uuid);
+$tt_baby_id = get_tt_baby_id($tt_baby_uuid);
+
+
+// Filters
 $tt_filter_date = date("Y-m-d");
 if(isset($_POST['tt_filter_date'])){
     $tt_filter_date = htmlentities(trim($_POST['tt_filter_date']));
@@ -10,7 +20,7 @@ if(isset($_POST['tt_filter_sort'])){
     $tt_filter_sort = htmlentities(trim($_POST['tt_filter_sort']));
 }
 
-$sessions_list = list_event_sessions($tt_filter_date, $tt_filter_sort);
+$sessions_list = list_event_sessions($tt_baby_id, $tt_filter_date, $tt_filter_sort);
 
 ?>
 <div class="row">
@@ -28,6 +38,7 @@ $sessions_list = list_event_sessions($tt_filter_date, $tt_filter_sort);
             </div>
             <div class="panel-body">
                 <div class="row">
+
                 	<div id="msgdiv" style="height:30px;">
                     <p>
                     <?php if(isset($msgError) && strlen($msgError) > 0 ) { ?>
@@ -37,6 +48,8 @@ $sessions_list = list_event_sessions($tt_filter_date, $tt_filter_sort);
                     <?php } ?>
                     </p>
                     </div>
+
+                    <div style="margin-left:15px; margin-bottom:5px"><label>Selected Baby : </label>&nbsp;<?php echo get_selected_baby_name($tt_baby_id); ?></div>
 					
                     <div class="col-lg-12">
 

@@ -20,6 +20,16 @@ DC Type
 $msgError = ""; // Clear Error Msg
 $msgSuccess = ""; // Clear Success Msg
 
+// Get User ID of logged in user
+$tt_user_uuid = get_tt_user_uuid();
+$tt_user_id = get_tt_user_id($tt_user_uuid);
+
+// Get Baby ID of selected baby
+$tt_baby_uuid = get_selected_baby_by_user_uuid($tt_user_uuid);
+$tt_baby_id = get_tt_baby_id($tt_baby_uuid);
+
+
+// Save Manual Entry
 if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form_postbk'] == 1)){
 
     $tt_val = "";
@@ -169,10 +179,11 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
             // Table1 - tt_events
             // {
             // Prepare the SQL statement
-            $stmt1 = $pdo->prepare("INSERT INTO tt_events (tt_event_date, tt_event_time, tt_event_val_raw, tt_event_val_parsed, tt_event_notes, created_on, updated_on)
-            VALUES (:tt_event_date, :tt_event_time, :tt_event_val_raw, :tt_event_val_parsed, :tt_event_notes, :created_on, :updated_on)");
+            $stmt1 = $pdo->prepare("INSERT INTO tt_events (tt_baby_id, tt_event_date, tt_event_time, tt_event_val_raw, tt_event_val_parsed, tt_event_notes, created_on, updated_on)
+            VALUES (:tt_baby_id, :tt_event_date, :tt_event_time, :tt_event_val_raw, :tt_event_val_parsed, :tt_event_notes, :created_on, :updated_on)");
 
             // Bind parameters
+            $stmt1->bindParam(':tt_baby_id', $tt_baby_id);
             $stmt1->bindParam(':tt_event_date', $now_date_only);
             $stmt1->bindParam(':tt_event_time', $tt_time_only);
             $stmt1->bindParam(':tt_event_val_raw', $tt_val);
@@ -199,7 +210,13 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
                                             FROM tt_event_sessions 
                                             WHERE tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions)
                                             ) AS max_tt_es_time_start
-                                        FROM tt_event_sessions WHERE tt_es_time_end IS NULL");
+                                        FROM tt_event_sessions 
+                                        WHERE tt_es_type = 'FEED' 
+                                            AND tt_baby_id = :tt_baby_id 
+                                            AND tt_es_time_end IS NULL");
+                
+                // Bind parameters
+                $stmt3->bindParam(':tt_baby_id', $tt_baby_id);
                 $stmt3->execute();
 
                 // Fetch the result
@@ -268,7 +285,13 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
                                             FROM tt_event_sessions
                                             WHERE tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions)
                                             ) AS max_tt_es_time_start
-                                        FROM tt_event_sessions WHERE tt_es_type = 'SLEEP' AND tt_es_time_end IS NULL");
+                                        FROM tt_event_sessions 
+                                        WHERE tt_es_type = 'SLEEP' 
+                                            AND tt_baby_id = :tt_baby_id 
+                                            AND tt_es_time_end IS NULL");
+
+                // Bind parameters
+                $stmt3->bindParam(':tt_baby_id', $tt_baby_id);
                 $stmt3->execute();
 
                 // Fetch the result
@@ -333,17 +356,18 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
                 // {
                 // Prepare the SQL statement
                 $stmt2a = $pdo->prepare("INSERT INTO tt_event_sessions (
-                    tt_es_event_id_start, tt_es_date, tt_es_type,
+                    tt_baby_id, tt_es_event_id_start, tt_es_date, tt_es_type,
                     tt_es_time_start, tt_es_feed_side,
                     tt_es_dc_type, created_on, updated_on
                 )
                 VALUES (
-                    :tt_es_event_id_start, :tt_es_date, :tt_es_type,
+                    :tt_baby_id, :tt_es_event_id_start, :tt_es_date, :tt_es_type,
                     :tt_es_time_start, :tt_es_feed_side,
                     :tt_es_dc_type, :created_on, :updated_on
                 )");
 
                 // Bind parameters
+                $stmt2a->bindParam(':tt_baby_id', $tt_baby_id);
                 $stmt2a->bindParam(':tt_es_event_id_start', $qry1_last_insert_id);
                 $stmt2a->bindParam(':tt_es_date', $now_date_only);
                 $stmt2a->bindParam(':tt_es_type', $tt_val_sess_type);
@@ -396,6 +420,10 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
 						
 						<form role="form" class="form-inline" id="manual_entry_form" name="manual_entry_form" method="POST" >	
     
+                            <div class="form-group">
+                                <label>Selected Baby : </label>&nbsp;<?php echo get_selected_baby_name($tt_baby_id); ?>
+                            </div>
+                            <br/>
                             <div class="form-group">
                                 <label>Event Value :</label>
                                 <input id="tt_val" name="tt_val" class="form-control" type="text" placeholder="<keyword> <time> <ext1>" value="">

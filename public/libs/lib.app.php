@@ -3,7 +3,7 @@
 # Last Feed Stats
 # {
 
-function check_feed_in_progress(){
+function check_feed_in_progress($tt_baby_id){
 
     global $pdo;
 
@@ -11,7 +11,14 @@ function check_feed_in_progress(){
 
     // Prepare and execute the query
     $stmt = $pdo->prepare("SELECT count(*) as cnt
-                            FROM tt_event_sessions WHERE tt_es_type='FEED' AND tt_es_time_start IS NOT NULL AND tt_es_time_end IS NULL");
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'FEED'
+                                AND tt_baby_id = :tt_baby_id 
+                                AND tt_es_time_start IS NOT NULL 
+                                AND tt_es_time_end IS NULL");
+    
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -29,7 +36,7 @@ function check_feed_in_progress(){
     return $feed_in_progress;
 }
 
-function get_time_since_last_feed(){
+function get_time_since_last_feed($tt_baby_id){
 
     global $pdo;
 
@@ -40,7 +47,14 @@ function get_time_since_last_feed(){
 
     // Prepare and execute the query
     $stmt = $pdo->prepare("SELECT TIMESTAMPDIFF(MINUTE, tt_es_time_end, '".$now_timestamp."') as feed_diff
-    from tt_event_sessions where tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions WHERE tt_es_type='FEED')");
+                            FROM tt_event_sessions 
+                            WHERE tt_es_id = (SELECT MAX(tt_es_id) 
+                                                FROM tt_event_sessions 
+                                                WHERE tt_es_type = 'FEED'
+                                                AND tt_baby_id = :tt_baby_id)");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -61,7 +75,7 @@ function get_time_since_last_feed(){
     return $feed_diff_txt;
 }
 
-function get_start_time_of_last_feed(){
+function get_start_time_of_last_feed($tt_baby_id){
 
     global $pdo;
 
@@ -69,7 +83,14 @@ function get_start_time_of_last_feed(){
 
     // Prepare and execute the query
     $stmt = $pdo->prepare("SELECT tt_es_time_start
-    from tt_event_sessions where tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions WHERE tt_es_type='FEED')");
+                            FROM tt_event_sessions 
+                            WHERE tt_es_id = (SELECT MAX(tt_es_id) 
+                                                FROM tt_event_sessions 
+                                                WHERE tt_es_type = 'FEED'
+                                                AND tt_baby_id = :tt_baby_id)");
+    
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -84,7 +105,7 @@ function get_start_time_of_last_feed(){
 
 }
 
-function get_end_time_of_last_feed(){
+function get_end_time_of_last_feed($tt_baby_id){
 
     global $pdo;
 
@@ -92,7 +113,14 @@ function get_end_time_of_last_feed(){
 
     // Prepare and execute the query
     $stmt = $pdo->prepare("SELECT tt_es_time_end
-    from tt_event_sessions where tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions WHERE tt_es_type='FEED')");
+                            FROM tt_event_sessions 
+                            WHERE tt_es_id = (SELECT MAX(tt_es_id) 
+                                                FROM tt_event_sessions 
+                                                WHERE tt_es_type = 'FEED'
+                                                AND tt_baby_id = :tt_baby_id)");
+    
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -106,7 +134,7 @@ function get_end_time_of_last_feed(){
     return $last_feed_end_time;
 }
 
-function get_recommended_time_of_next_feed(){
+function get_recommended_time_of_next_feed($tt_baby_id){
 
     global $pdo;
     
@@ -114,7 +142,14 @@ function get_recommended_time_of_next_feed(){
 
     // Prepare and execute the query
     $stmt = $pdo->prepare("SELECT tt_es_time_end
-    from tt_event_sessions where tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions WHERE tt_es_type='FEED')");
+                            FROM tt_event_sessions 
+                            WHERE tt_es_id = (SELECT MAX(tt_es_id) 
+                                                FROM tt_event_sessions 
+                                                WHERE tt_es_type = 'FEED'
+                                                AND tt_baby_id = :tt_baby_id)");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -130,14 +165,22 @@ function get_recommended_time_of_next_feed(){
     return $next_feed_recommended_time;
 }
 
-function get_duration_of_last_feed(){
+function get_duration_of_last_feed($tt_baby_id){
 
     global $pdo;
 
     $last_feed_duration = 0;
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT tt_es_time_duration as last_feed_duration from tt_event_sessions where tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions WHERE tt_es_type='FEED')");
+    $stmt = $pdo->prepare("SELECT tt_es_time_duration as last_feed_duration 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_id = (SELECT MAX(tt_es_id) 
+                                                FROM tt_event_sessions 
+                                                WHERE tt_es_type = 'FEED'
+                                                AND tt_baby_id = :tt_baby_id)");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -152,14 +195,22 @@ function get_duration_of_last_feed(){
 
 }
 
-function get_side_of_last_feed(){
+function get_side_of_last_feed($tt_baby_id){
 
     global $pdo;
 
     $last_feed_side_txt = "NA";
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT tt_es_feed_side as last_feed_side from tt_event_sessions where tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions WHERE tt_es_type='FEED')");
+    $stmt = $pdo->prepare("SELECT tt_es_feed_side as last_feed_side 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_id = (SELECT MAX(tt_es_id) 
+                                                FROM tt_event_sessions 
+                                                WHERE tt_es_type = 'FEED'
+                                                AND tt_baby_id = :tt_baby_id)");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
     
     // Fetch the result
@@ -185,7 +236,7 @@ function get_side_of_last_feed(){
 
 # Last diaper change stats
 # {
-function get_last_diaper_change_stats(){
+function get_last_diaper_change_stats($tt_baby_id){
 
     global $pdo;
 
@@ -197,7 +248,14 @@ function get_last_diaper_change_stats(){
 
     // Prepare and execute the query
     $stmt = $pdo->prepare("SELECT TIMESTAMPDIFF(MINUTE, tt_es_time_start, '".$now_timestamp."') as diaper_diff, tt_es_dc_type
-    from tt_event_sessions where tt_es_id = (SELECT MAX(tt_es_id) FROM tt_event_sessions WHERE tt_es_type='DIAPER_CHANGE')");
+                            FROM tt_event_sessions 
+                            WHERE tt_es_id = (SELECT MAX(tt_es_id) 
+                                                FROM tt_event_sessions 
+                                                WHERE tt_es_type = 'DIAPER_CHANGE'
+                                                AND tt_baby_id = :tt_baby_id)");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -236,14 +294,22 @@ function get_last_diaper_change_stats(){
 
 # Stats for the day
 # {
-function get_count_of_feed_sessions_for_date($date){
+function get_count_of_feed_sessions_for_date($tt_baby_id, $date){
 
     global $pdo;
 
     $count_feed_sessions_for_date = 0;
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as cnt FROM tt_event_sessions WHERE tt_es_type='FEED' AND tt_es_date='".$date."'");
+    $stmt = $pdo->prepare("SELECT count(*) as cnt 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'FEED' 
+                                AND tt_baby_id = :tt_baby_id 
+                                AND tt_es_date = :tt_date");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_date', $date);
     $stmt->execute();
     
     // Fetch the result
@@ -258,14 +324,22 @@ function get_count_of_feed_sessions_for_date($date){
 
 }
 
-function get_total_duration_of_all_feed_sessions_for_date($date){
+function get_total_duration_of_all_feed_sessions_for_date($tt_baby_id, $date){
 
     global $pdo;
 
     $total_duration_all_feed_sessions_for_date_txt = "";
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT SUM(tt_es_time_duration) as duration FROM tt_event_sessions WHERE tt_es_type='FEED' AND tt_es_date='".$date."'");
+    $stmt = $pdo->prepare("SELECT SUM(tt_es_time_duration) as duration 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'FEED'
+                                AND tt_baby_id = :tt_baby_id
+                                AND tt_es_date = :tt_date");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_date', $date);
     $stmt->execute();
     
     // Fetch the result
@@ -286,14 +360,22 @@ function get_total_duration_of_all_feed_sessions_for_date($date){
 
 }
 
-function get_total_count_of_diapers_used_for_date($date){
+function get_total_count_of_diapers_used_for_date($tt_baby_id, $date){
 
     global $pdo;
 
     $count_diapers_total_for_date = 0;
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as cnt FROM tt_event_sessions WHERE tt_es_type='DIAPER_CHANGE' AND tt_es_date='".$date."'");
+    $stmt = $pdo->prepare("SELECT count(*) as cnt 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'DIAPER_CHANGE' 
+                                AND tt_baby_id = :tt_baby_id 
+                                AND tt_es_date = :tt_date");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_date', $date);
     $stmt->execute();
 
     // Fetch the result
@@ -308,14 +390,23 @@ function get_total_count_of_diapers_used_for_date($date){
 
 }
 
-function get_count_of_diapers_used_type_pee_for_date($date){
+function get_count_of_diapers_used_type_pee_for_date($tt_baby_id, $date){
 
     global $pdo;
 
     $count_diapers_pee_for_date = 0;
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as cnt FROM tt_event_sessions WHERE tt_es_type='DIAPER_CHANGE' AND (tt_es_dc_type = 1 OR tt_es_dc_type = 3) AND tt_es_date='".$date."'");
+    $stmt = $pdo->prepare("SELECT count(*) as cnt 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'DIAPER_CHANGE'
+                                AND (tt_es_dc_type = 1 OR tt_es_dc_type = 3)
+                                AND tt_baby_id = :tt_baby_id 
+                                AND tt_es_date = :tt_date");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_date', $date);
     $stmt->execute();
 
     // Fetch the result
@@ -330,14 +421,23 @@ function get_count_of_diapers_used_type_pee_for_date($date){
 
 }
 
-function get_count_of_diapers_used_type_poop_for_date($date){
+function get_count_of_diapers_used_type_poop_for_date($tt_baby_id, $date){
 
     global $pdo;
 
     $count_diapers_poop_for_date = 0;
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as cnt FROM tt_event_sessions WHERE tt_es_type='DIAPER_CHANGE' AND (tt_es_dc_type = 2 OR tt_es_dc_type = 3) AND tt_es_date='".$date."'");
+    $stmt = $pdo->prepare("SELECT count(*) as cnt 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type='DIAPER_CHANGE' 
+                                AND (tt_es_dc_type = 2 OR tt_es_dc_type = 3) 
+                                AND tt_baby_id = :tt_baby_id
+                                AND tt_es_date = :tt_date");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_date', $date);
     $stmt->execute();
 
     // Fetch the result
@@ -356,14 +456,20 @@ function get_count_of_diapers_used_type_poop_for_date($date){
 
 # Overall Stats
 # {
-function get_count_of_total_diapers_used_overall(){
+function get_count_of_total_diapers_used_overall($tt_baby_id){
 
     global $pdo;
 
     $count_diapers_total_overall = "0";
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as count_diapers_total_overall FROM tt_event_sessions WHERE tt_es_type='DIAPER_CHANGE'");
+    $stmt = $pdo->prepare("SELECT count(*) as count_diapers_total_overall 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'DIAPER_CHANGE'
+                                AND tt_baby_id = :tt_baby_id");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -378,7 +484,7 @@ function get_count_of_total_diapers_used_overall(){
 
 }
 
-function get_feed_side_percentage(){
+function get_feed_side_percentage($tt_baby_id){
 
     global $pdo;
 
@@ -388,7 +494,13 @@ function get_feed_side_percentage(){
     // Get Total count
     $count_total_sessions_overall_all = "0";
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as count_total_sessions_overall_all FROM tt_event_sessions WHERE tt_es_type='FEED'");
+    $stmt = $pdo->prepare("SELECT count(*) as count_total_sessions_overall_all 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'FEED'
+                                AND tt_baby_id = :tt_baby_id");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -402,7 +514,13 @@ function get_feed_side_percentage(){
     // Get Left count
     $count_total_sessions_overall_left = "0";
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as count_total_sessions_overall_left FROM tt_event_sessions WHERE tt_es_feed_side=1");
+    $stmt = $pdo->prepare("SELECT count(*) as count_total_sessions_overall_left 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_feed_side = 1
+                                AND tt_baby_id = :tt_baby_id");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -416,7 +534,13 @@ function get_feed_side_percentage(){
     // Get Right count
     $count_total_sessions_overall_right = 0;
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as count_total_sessions_overall_right FROM tt_event_sessions WHERE tt_es_feed_side=2");
+    $stmt = $pdo->prepare("SELECT count(*) as count_total_sessions_overall_right 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_feed_side = 2
+                                AND tt_baby_id = :tt_baby_id");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
     $stmt->execute();
 
     // Fetch the result
@@ -438,14 +562,22 @@ function get_feed_side_percentage(){
 }
 
 
-function get_count_of_sleep_sessions_for_date($date){
+function get_count_of_sleep_sessions_for_date($tt_baby_id, $date){
 
     global $pdo;
 
     $count_sleep_sessions_for_date = "0";
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT count(*) as count_sleep_sessions_for_date FROM tt_event_sessions WHERE tt_es_type='SLEEP' AND tt_es_date='".$date."'");
+    $stmt = $pdo->prepare("SELECT count(*) as count_sleep_sessions_for_date 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'SLEEP' 
+                                AND tt_baby_id = :tt_baby_id 
+                                AND tt_es_date = :tt_date");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_date', $date);
     $stmt->execute();
 
     // Fetch the result
@@ -461,14 +593,22 @@ function get_count_of_sleep_sessions_for_date($date){
 }
 
 
-function get_total_sleep_duration_for_date($date){
+function get_total_sleep_duration_for_date($tt_baby_id, $date){
 
     global $pdo;
 
     $total_sleep_duration_for_date_txt = "";
 
     // Prepare and execute the query
-    $stmt = $pdo->prepare("SELECT SUM(tt_es_time_duration) as duration FROM tt_event_sessions WHERE tt_es_type='SLEEP' AND tt_es_date='".$date."'");
+    $stmt = $pdo->prepare("SELECT SUM(tt_es_time_duration) as duration 
+                            FROM tt_event_sessions 
+                            WHERE tt_es_type = 'SLEEP'
+                                AND tt_baby_id = :tt_baby_id
+                                AND tt_es_date = :tt_date");
+    
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_date', $date);
     $stmt->execute();
 
     // Fetch the result
@@ -491,10 +631,99 @@ function get_total_sleep_duration_for_date($date){
 
 # }
 
+
+function get_tt_user_uuid(){
+    return $_SESSION['tt_user_uuid'];
+}
+
+
+function get_tt_user_id($tt_user_uuid){
+    
+    global $pdo;
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("SELECT tt_user_id, tt_user_uuid 
+                            FROM tt_users
+                            WHERE tt_user_uuid = :tt_user_uuid");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_user_uuid', $tt_user_uuid);
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result)){
+        return $result['tt_user_id'];
+    }
+
+    return false;
+
+}
+
+
+function get_tt_baby_uuid(){
+    return $_SESSION['tt_baby_uuid'];
+}
+
+
+function get_tt_baby_id($tt_baby_uuid){
+    
+    global $pdo;
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("SELECT tt_baby_id, tt_baby_uuid 
+                            FROM tt_babies
+                            WHERE tt_baby_uuid = :tt_baby_uuid");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_uuid', $tt_baby_uuid);
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result)){
+        return $result['tt_baby_id'];
+    }
+
+    return false;
+
+}
+
+
+function get_selected_baby_name($tt_baby_id){
+
+    global $pdo;
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("SELECT tt_baby_id, tt_baby_uuid, tt_baby_name 
+                            FROM tt_babies
+                            WHERE tt_baby_id = :tt_baby_id");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result)){
+        return $result['tt_baby_name'];
+    }
+
+    return false;
+    
+}
+
+
 # Table List
 # {
 # Events
-function list_events($tt_filter_date, $tt_filter_sort){
+function list_events($tt_baby_id, $tt_filter_date, $tt_filter_sort){
 
     global $pdo;
 
@@ -502,10 +731,11 @@ function list_events($tt_filter_date, $tt_filter_sort){
 
     // Prepare and execute the query
     $qry = "SELECT *
-                FROM tt_events WHERE 1=1";
+                FROM tt_events 
+                WHERE tt_baby_id = :tt_baby_id";
     
     if(isset($tt_filter_date) && strlen($tt_filter_date) > 0){
-        $qry = $qry." AND tt_event_date = '".$tt_filter_date."'";
+        $qry = $qry." AND tt_event_date = :tt_filter_date";
     }
 
     $qry = $qry." ORDER BY tt_event_date DESC, tt_event_time";
@@ -520,7 +750,10 @@ function list_events($tt_filter_date, $tt_filter_sort){
     //echo $qry;
 
     $stmt = $pdo->prepare($qry);
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_filter_date', $tt_filter_date);
     $stmt->execute();
+
 
     // Fetch the result
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -530,10 +763,10 @@ function list_events($tt_filter_date, $tt_filter_sort){
         return $result;
     }
 
-    return $result;
+    return false;
 }
 # Event Sessions
-function list_event_sessions($tt_filter_date, $tt_filter_sort){
+function list_event_sessions($tt_baby_id, $tt_filter_date, $tt_filter_sort){
 
     global $pdo;
 
@@ -541,10 +774,11 @@ function list_event_sessions($tt_filter_date, $tt_filter_sort){
 
     // Prepare and execute the query
     $qry = "SELECT *
-                FROM tt_event_sessions WHERE 1=1";
+                FROM tt_event_sessions 
+                WHERE tt_baby_id = :tt_baby_id";
 
     if(isset($tt_filter_date) && strlen($tt_filter_date) > 0){
-        $qry = $qry." AND tt_es_date = '".$tt_filter_date."'";
+        $qry = $qry." AND tt_es_date = :tt_filter_date";
     }
 
     $qry = $qry." ORDER BY tt_es_date DESC, tt_es_time_start";
@@ -559,6 +793,8 @@ function list_event_sessions($tt_filter_date, $tt_filter_sort){
     //echo $qry;
 
     $stmt = $pdo->prepare($qry);
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->bindParam(':tt_filter_date', $tt_filter_date);
     $stmt->execute();
 
     // Fetch the result
@@ -569,9 +805,151 @@ function list_event_sessions($tt_filter_date, $tt_filter_sort){
         return $result;
     }
 
-    return $result;
+    return false;
+}
+
+
+# Babies
+function list_babies($tt_user_id){
+
+    global $pdo;
+
+    $result = "";
+
+    // Prepare and execute the query
+    $qry = "SELECT *
+                FROM tt_babies 
+                WHERE tt_user_id = :tt_user_id";
+
+    $qry = $qry." ORDER BY created_on ASC LIMIT 300";
+
+    # Commented out - For testing only
+    //echo $qry;
+
+    $stmt = $pdo->prepare($qry);
+    $stmt->bindParam(':tt_user_id', $tt_user_id);
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result)){
+        return $result;
+    }
+
+    return false;
+}
+
+
+function save_selected_baby($tt_selected_baby_per_user, $tt_user_id){
+
+    global $pdo;
+
+    // Curent Timestamp
+    $now_timestamp = date("Y-m-d H:i:s");
+
+    // -- Reset all baby selections to zero
+    // Prepare the SQL statement
+    $stmt1 = $pdo->prepare("UPDATE tt_babies SET 
+                                    tt_selected_baby_per_user = 0, 
+                                    updated_on = :updated_on 
+                            WHERE tt_user_id = :tt_user_id");
+
+    // Bind parameters
+    $stmt1->bindParam(':updated_on', $now_timestamp);
+    $stmt1->bindParam(':tt_user_id', $tt_user_id);
+
+    // Execute the statement
+    $stmt1->execute();
+
+    // -- Set the selected baby
+    // Prepare the SQL statement
+    $stmt2 = $pdo->prepare("UPDATE tt_babies SET 
+                                    tt_selected_baby_per_user = 1, 
+                                    updated_on = :updated_on 
+                            WHERE tt_baby_uuid = :tt_selected_baby_per_user 
+                            AND tt_user_id = :tt_user_id");
+
+    // Bind parameters
+    $stmt2->bindParam(':updated_on', $now_timestamp);
+    $stmt2->bindParam(':tt_selected_baby_per_user', $tt_selected_baby_per_user);
+    $stmt2->bindParam(':tt_user_id', $tt_user_id);
+
+    // Execute the statement
+    $stmt2->execute();
+
+    return true;
+}
+
+
+function add_baby($tt_baby_name, $tt_user_id){
+
+    global $pdo;
+
+    // Curent Timestamp
+    $now_timestamp = date("Y-m-d H:i:s");
+
+    // Prepare the SQL statement
+    $stmt = $pdo->prepare("INSERT INTO tt_babies (tt_baby_name, tt_baby_uuid, tt_user_id, created_on, updated_on)
+            VALUES (:tt_baby_name, :tt_baby_uuid, :tt_user_id, :created_on, :updated_on)");
+
+    $tt_baby_uuid = generate_uuid();
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_name', $tt_baby_name);
+    $stmt->bindParam(':tt_baby_uuid', $tt_baby_uuid);
+    $stmt->bindParam(':tt_user_id', $tt_user_id);
+    $stmt->bindParam(':created_on', $now_timestamp);
+    $stmt->bindParam(':updated_on', $now_timestamp);
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Get the last inserted ID
+    $qry_last_insert_id = $pdo->lastInsertId();   
+
+    return true;
 }
 # }
+
+function generate_uuid() {
+
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0x0fff ) | 0x4000,
+        mt_rand( 0, 0x3fff ) | 0x8000,
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ) );
+
+}
+
+
+function get_selected_baby_by_user_uuid($tt_user_uuid){
+
+    global $pdo;
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("SELECT tt_baby_id, tt_baby_uuid, tt_selected_baby_per_user 
+                            FROM tt_babies 
+                            INNER JOIN tt_users ON tt_babies.tt_user_id = tt_users.tt_user_id
+                            WHERE tt_babies.tt_selected_baby_per_user = 1
+                                AND tt_users.tt_user_uuid = :tt_user_uuid");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_user_uuid', $tt_user_uuid);
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result)){
+        return $result['tt_baby_uuid'];
+    }
+
+    return false;
+}
 
 function row_color_sessions($val){
 

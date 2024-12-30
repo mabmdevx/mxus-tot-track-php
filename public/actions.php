@@ -30,6 +30,10 @@ switch($page)
     $pageRtn=include_once("pages/sessions.php");
     break;
 
+    case "babies":
+    $pageRtn=include_once("pages/babies.php");
+    break;
+
     default:
     $pageRtn=include_once("pages/404page.php");
     break;

@@ -115,6 +115,9 @@ if(isset($_GET['pg']) && strlen($_GET['pg'])>0 ){
                         <a href="<?php echo HOME_PAGE; ?>?pg=dashboard"><i class="fa fa-dashboard fa-fw"></i>&nbsp;Dashboard</a>
                     </li>
                     <li>
+                        <a href="<?php echo HOME_PAGE; ?>?pg=babies"><i class="fa fa-list fa-fw"></i>&nbsp;Babies</a>
+                    </li>
+                    <li>
                         <a href="<?php echo HOME_PAGE; ?>?pg=quickentry"><i class="fa fa-wrench fa-fw"></i>&nbsp;Quick Entry</a>
                     </li> 
                     <li>

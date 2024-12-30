@@ -1,7 +1,7 @@
 <?php
 
 $msgError = "";
-$tt_remember_me_token_val = "tt_rm_20240513";
+$tt_remember_me_token_val = "tt-rm-7f3f04a9-dddb-4f54-8383-357f09f63a64";
 
 
 if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
@@ -12,10 +12,12 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
 	if(isset($msgError) && strlen($msgError)==0){ // If no error, proceed, else display error to user
 
         // If "Remember Me" cookie is set (On subsequent page loads), login using the "Remember Me" cookie info
-        if (isset($_COOKIE['rm_token']) && !isset($_SESSION['username'])) {
+        if (isset($_COOKIE['tt_rm_token']) && !isset($_SESSION['username'])) {
 
-            $tt_rm_token = $_COOKIE['rm_token'];
-            $tt_rm_username = $_COOKIE['rm_username'];
+            $tt_rm_token = $_COOKIE['tt_rm_token'];
+            $tt_rm_username = $_COOKIE['tt_rm_username'];
+            $tt_rm_user_uuid = $_COOKIE['tt_rm_user_uuid'];
+            $tt_rm_baby_uuid = $_COOKIE['tt_rm_baby_uuid'];
 
             // Look up the user with the token from the database
             //$known_user_rm_token = find_user_by_token($token); - for later
@@ -29,8 +31,10 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
 
             } else {
                 // If token is not valid, delete the cookie
-                setcookie('rm_token', '', time() - 3600);
-                setcookie('rm_username', '', time() - 3600);
+                setcookie('tt_rm_token', '', time() - 3600);
+                setcookie('tt_rm_username', '', time() - 3600);
+                setcookie('tt_rm_user_uuid', '', time() - 3600);
+                setcookie('tt_rm_baby_uuid', '', time() - 3600);
             }
 
         } else {
@@ -56,6 +60,8 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
                 
                     $login_check_flag = true;
                     $_SESSION['username'] = $input_username;
+                    $_SESSION['tt_user_uuid'] = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+                    $_SESSION['tt_baby_uuid'] = get_selected_baby_by_user_uuid($_SESSION['tt_user_uuid']);
 
                     // When user logs in and checks "Remember Me"
                     if ($input_remember_me === "1") {
@@ -63,10 +69,12 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
                         //$tt_remember_me_token = generate_random_token(); // Generate a random token - for later
                         $tt_remember_me_token = $tt_remember_me_token_val;
 
-                        //echo "asdfasdf"; exit;
+                        setcookie('tt_rm_token', $tt_remember_me_token, time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+                        setcookie('tt_rm_username', $input_username, time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
 
-                        setcookie('rm_token', $tt_remember_me_token, time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
-                        setcookie('rm_username', $input_username, time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+                        // Save User UUID and Baby UUID in the cookie for Remember Me
+                        setcookie('tt_rm_user_uuid', $_SESSION['tt_user_uuid'], time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+                        setcookie('tt_rm_baby_uuid', $_SESSION['tt_baby_uuid'], time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
 
                         // Save $rm_token in the database linked to the user's account - for later
                     }

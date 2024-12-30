@@ -1,5 +1,13 @@
 <?php
 
+// Get User ID of logged in user
+$tt_user_uuid = get_tt_user_uuid();
+$tt_user_id = get_tt_user_id($tt_user_uuid);
+
+// Get Baby ID of selected baby
+$tt_baby_uuid = get_selected_baby_by_user_uuid($tt_user_uuid);
+$tt_baby_id = get_tt_baby_id($tt_baby_uuid);
+
 // Curent Timestamp
 $now_timestamp = date("Y-m-d H:i:s");
 $now_date_only = date("Y-m-d");
@@ -9,31 +17,31 @@ $yesterday_date_only = date('Y-m-d', strtotime('-1 day'));
 
 # Last Feed Stats
 # {
-$feed_in_progress = check_feed_in_progress();
+$feed_in_progress = check_feed_in_progress($tt_baby_id);
 
 # Time since last feed
-$feed_diff_txt = get_time_since_last_feed();
+$feed_diff_txt = get_time_since_last_feed($tt_baby_id);
 
 # Duration of last feed
-$last_feed_duration = get_duration_of_last_feed();
+$last_feed_duration = get_duration_of_last_feed($tt_baby_id);
 
 # Side of last feed
-$last_feed_side_txt = get_side_of_last_feed();
+$last_feed_side_txt = get_side_of_last_feed($tt_baby_id);
 
 # Start time of last feed
-$last_feed_start_time = get_start_time_of_last_feed();
+$last_feed_start_time = get_start_time_of_last_feed($tt_baby_id);
 
 # End time of last feed
-$last_feed_end_time = get_end_time_of_last_feed();
+$last_feed_end_time = get_end_time_of_last_feed($tt_baby_id);
 
 # Recommended time of next feed
-$next_feed_recommended_time = get_recommended_time_of_next_feed();
+$next_feed_recommended_time = get_recommended_time_of_next_feed($tt_baby_id);
 # }
 
 
 # Last Diaper Change Stats
 # {
-$last_diaper_change_stats_arr = get_last_diaper_change_stats();
+$last_diaper_change_stats_arr = get_last_diaper_change_stats($tt_baby_id);
 
 # Time since last diaper change
 $diaper_diff_txt = $last_diaper_change_stats_arr[0];
@@ -46,60 +54,60 @@ $diaper_last_dc_type_txt = $last_diaper_change_stats_arr[1];
 # Stats for the day - Today
 # {
 # No. of feed sessions today
-$count_feed_sessions_today = get_count_of_feed_sessions_for_date($now_date_only);
+$count_feed_sessions_today = get_count_of_feed_sessions_for_date($tt_baby_id, $now_date_only);
 
 # Total duration of all feed sessions today
-$total_duration_all_feed_sessions_today_txt = get_total_duration_of_all_feed_sessions_for_date($now_date_only);
+$total_duration_all_feed_sessions_today_txt = get_total_duration_of_all_feed_sessions_for_date($tt_baby_id, $now_date_only);
 
 # Total count of diapers used today
-$count_diapers_total_today = get_total_count_of_diapers_used_for_date($now_date_only);
+$count_diapers_total_today = get_total_count_of_diapers_used_for_date($tt_baby_id, $now_date_only);
 
 # Count of diapers used today - Pee
-$count_diapers_pee_today = get_count_of_diapers_used_type_pee_for_date($now_date_only);
+$count_diapers_pee_today = get_count_of_diapers_used_type_pee_for_date($tt_baby_id, $now_date_only);
 
 # Count of diapers used today - Poop
-$count_diapers_poop_today = get_count_of_diapers_used_type_poop_for_date($now_date_only);
+$count_diapers_poop_today = get_count_of_diapers_used_type_poop_for_date($tt_baby_id, $now_date_only);
 
 # Count of sleep sessions today
-$count_sleep_sessions_today = get_count_of_sleep_sessions_for_date($now_date_only);
+$count_sleep_sessions_today = get_count_of_sleep_sessions_for_date($tt_baby_id, $now_date_only);
 
 # Total sleep duration today
-$total_sleep_duration_today = get_total_sleep_duration_for_date($now_date_only);
+$total_sleep_duration_today = get_total_sleep_duration_for_date($tt_baby_id, $now_date_only);
 # }
 
 
 # Stats for the day - Yesterday
 # {
 # No. of feed sessions yesterday
-$count_feed_sessions_yesterday = get_count_of_feed_sessions_for_date($yesterday_date_only);
+$count_feed_sessions_yesterday = get_count_of_feed_sessions_for_date($tt_baby_id, $yesterday_date_only);
 
 # Total duration of all feed sessions yesterday
-$total_duration_all_feed_sessions_yesterday_txt = get_total_duration_of_all_feed_sessions_for_date($yesterday_date_only);
+$total_duration_all_feed_sessions_yesterday_txt = get_total_duration_of_all_feed_sessions_for_date($tt_baby_id, $yesterday_date_only);
 
 # Total count of diapers used yesterday
-$count_diapers_total_yesterday = get_total_count_of_diapers_used_for_date($yesterday_date_only);
+$count_diapers_total_yesterday = get_total_count_of_diapers_used_for_date($tt_baby_id, $yesterday_date_only);
 
 # Count of diapers used yesterday - Pee
-$count_diapers_pee_yesterday = get_count_of_diapers_used_type_pee_for_date($yesterday_date_only);
+$count_diapers_pee_yesterday = get_count_of_diapers_used_type_pee_for_date($tt_baby_id,$yesterday_date_only);
 
 # Count of diapers used yesterday - Poop
-$count_diapers_poop_yesterday = get_count_of_diapers_used_type_poop_for_date($yesterday_date_only);
+$count_diapers_poop_yesterday = get_count_of_diapers_used_type_poop_for_date($tt_baby_id, $yesterday_date_only);
 
 # Count of sleep sessions yesterday
-$count_sleep_sessions_yesterday = get_count_of_sleep_sessions_for_date($yesterday_date_only);
+$count_sleep_sessions_yesterday = get_count_of_sleep_sessions_for_date($tt_baby_id, $yesterday_date_only);
 
 # Total sleep duration yesterday
-$total_sleep_duration_yesterday = get_total_sleep_duration_for_date($yesterday_date_only);
+$total_sleep_duration_yesterday = get_total_sleep_duration_for_date($tt_baby_id, $yesterday_date_only);
 # }
 
 
 # Overall Stats
 # {
 # Count of total diapers used overall
-$count_diapers_total_overall = get_count_of_total_diapers_used_overall();
+$count_diapers_total_overall = get_count_of_total_diapers_used_overall($tt_baby_id);
 
 # Feed side percentage
-$feed_side_pc_arr = get_feed_side_percentage();
+$feed_side_pc_arr = get_feed_side_percentage($tt_baby_id);
 $feed_side_pc_left = $feed_side_pc_arr[0];
 $feed_side_pc_right = $feed_side_pc_arr[1];
 # }
@@ -125,6 +133,9 @@ $feed_side_pc_right = $feed_side_pc_arr[1];
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
+
+                        <div style="margin-left:15px; margin-bottom:5px"><label>Selected Baby : </label>&nbsp;<?php echo get_selected_baby_name($tt_baby_id); ?></div>
+
                         <fieldset class="fieldset_custom">
                             <legend class="fieldset_custom">Last feed</legend>
                             <?php //if($feed_in_progress === false) { ?>
