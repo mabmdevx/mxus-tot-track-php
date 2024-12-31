@@ -28,6 +28,8 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
                 // Log in the user using the cookie
                 $login_check_flag = true;
                 $_SESSION['username'] = $tt_rm_username;
+                $_SESSION['tt_user_uuid'] = $tt_rm_user_uuid;
+                $_SESSION['tt_baby_uuid'] = $tt_rm_baby_uuid;
 
             } else {
                 // If token is not valid, delete the cookie
