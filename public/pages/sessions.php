@@ -41,10 +41,10 @@ $sessions_list = list_event_sessions($tt_baby_id, $tt_filter_date, $tt_filter_so
 
                 	<div id="msgdiv" style="height:30px;">
                     <p>
-                    <?php if(isset($msgError) && strlen($msgError) > 0 ) { ?>
-                    <div align="center" class="msgError"><strong><?php echo $msgError; ?></strong></div>
-                    <?php } else if(isset($msgSuccess) && strlen($msgSuccess) > 0 ) { ?>
-                    <div align="center" class="msgSuccess"><strong><?php echo $msgSuccess; ?></strong></div>
+                    <?php if(isset($msg_error) && strlen($msg_error) > 0 ) { ?>
+                    <div align="center" class="msg_error"><strong><?php echo $msg_error; ?></strong></div>
+                    <?php } else if(isset($msg_success) && strlen($msg_success) > 0 ) { ?>
+                    <div align="center" class="msg_success"><strong><?php echo $msg_success; ?></strong></div>
                     <?php } ?>
                     </p>
                     </div>

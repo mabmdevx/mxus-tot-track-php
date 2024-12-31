@@ -1,6 +1,6 @@
 <?php
 
-$msgError = "";
+$msg_error = "";
 $tt_remember_me_token_val = "tt-rm-7f3f04a9-dddb-4f54-8383-357f09f63a64";
 
 
@@ -9,7 +9,7 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
 
 	$login_check_flag = false;
 
-	if(isset($msgError) && strlen($msgError)==0){ // If no error, proceed, else display error to user
+	if(isset($msg_error) && strlen($msg_error)==0){ // If no error, proceed, else display error to user
 
         // If "Remember Me" cookie is set (On subsequent page loads), login using the "Remember Me" cookie info
         if (isset($_COOKIE['tt_rm_token']) && !isset($_SESSION['username'])) {
@@ -51,10 +51,10 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
 
             // Validations
             if( strlen($input_username)==0 || strlen($input_password)==0 ){
-                $msgError = "Please provide valid Username and Password";
+                $msg_error = "Please provide valid Username and Password";
             }
 
-            if(isset($msgError) && strlen($msgError)==0){ // If no error, proceed, else display error to user
+            if(isset($msg_error) && strlen($msg_error)==0){ // If no error, proceed, else display error to user
 
                 // Look up the user with the username from the database
                 $known_user = find_user_by_username($input_username);
@@ -88,11 +88,11 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
                         }
 
                     } else {
-                        $msgError = "Invalid Password. Please try again.";
+                        $msg_error = "Invalid Password. Please try again.";
                     }
                 
                 } else {
-                    $msgError = "Please provide valid Username and Password.";
+                    $msg_error = "Please provide valid Username and Password.";
                 }
             
             }
@@ -122,7 +122,7 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
                 <form role="form" method="post">
                     <fieldset>
                    		<div class="form-group">
-                            <div align="center" style="color:#FF3333"><?php echo $msgError; ?></div>
+                            <div align="center" style="color:#FF3333"><?php echo $msg_error; ?></div>
                         </div>
                         <div class="form-group">
                             <input id="username" name="username" class="form-control" placeholder="Username" type="text" autofocus>

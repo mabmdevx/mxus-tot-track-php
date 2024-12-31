@@ -17,8 +17,8 @@ DC Type
 */
 
 
-$msgError = ""; // Clear Error Msg
-$msgSuccess = ""; // Clear Success Msg
+$msg_error = ""; // Clear Error Msg
+$msg_success = ""; // Clear Success Msg
 
 // Get User ID of logged in user
 $tt_user_uuid = get_tt_user_uuid();
@@ -38,10 +38,10 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
     }
 
     if(strlen($tt_val) === 0){
-        $msgError = "Please enter the value before submitting";
+        $msg_error = "Please enter the value before submitting";
     }
 
-    if(strlen($msgError) === 0){ // If no error, proceed
+    if(strlen($msg_error) === 0){ // If no error, proceed
 
         $tt_notes = "";
         if(isset($_POST['tt_notes'])){
@@ -147,7 +147,7 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
         } else {
             $tt_val_param3 = 0;
             if($tt_val_param1 === "DC"){
-                $msgError = "Parameter missing";
+                $msg_error = "Parameter missing";
             }
         }
         # Commented out - For testing only
@@ -164,7 +164,7 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
 
 
         # DB
-        if(strlen($msgError) === 0){
+        if(strlen($msg_error) === 0){
 
             // Curent Timestamp
             $now_timestamp = date("Y-m-d H:i:s");
@@ -385,7 +385,7 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
 
             }
             
-            $msgSuccess = "Saved successfully";
+            $msg_success = "Saved successfully";
         }
     } // End - If no error
 }
@@ -408,10 +408,10 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
                 <div class="row">
                 	<div id="msgdiv" style="height:30px;">
                     <p>
-                    <?php if(isset($msgError) && strlen($msgError) > 0 ) { ?>
-                    <div align="center" class="msgError"><strong><?php echo $msgError; ?></strong></div>
-                    <?php } else if(isset($msgSuccess) && strlen($msgSuccess) > 0 ) { ?>
-                    <div align="center" class="msgSuccess"><strong><?php echo $msgSuccess; ?></strong></div>
+                    <?php if(isset($msg_error) && strlen($msg_error) > 0 ) { ?>
+                    <div align="center" class="msg_error"><strong><?php echo $msg_error; ?></strong></div>
+                    <?php } else if(isset($msg_success) && strlen($msg_success) > 0 ) { ?>
+                    <div align="center" class="msg_success"><strong><?php echo $msg_success; ?></strong></div>
                     <?php } ?>
                     </p>
                     </div>
@@ -441,7 +441,7 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
 
 						</form>
 						
-                        <?php if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form_postbk'] == 1) && (strlen($msgError) === 0)){ ?>
+                        <?php if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form_postbk'] == 1) && (strlen($msg_error) === 0)){ ?>
                         <br/>
                         <div>
                             <strong>Submitted Value:</strong>

@@ -17,8 +17,8 @@ DC Type
 */
 
 
-$msgError = ""; // Clear Error Msg
-$msgSuccess = ""; // Clear Success Msg
+$msg_error = ""; // Clear Error Msg
+$msg_success = ""; // Clear Success Msg
 
 // Get User ID of logged in user
 $tt_user_uuid = get_tt_user_uuid();
@@ -68,16 +68,16 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
     }
 
     if(strlen($tt_val_rd_param1) === 0){
-        $msgError = "Please enter the Operation value before submitting";
+        $msg_error = "Please enter the Operation value before submitting";
     }
     if(strlen($tt_val_txt_param2a) === 0){
-        $msgError = "Please enter the Date value before submitting";
+        $msg_error = "Please enter the Date value before submitting";
     }
     if(strlen($tt_val_rd_param2b) === 0){
-        $msgError = "Please enter the Time value before submitting";
+        $msg_error = "Please enter the Time value before submitting";
     }
     if(($tt_val_rd_param1 === "DC") && strlen($tt_val_rd_param3) === 0){
-        $msgError = "Please enter the DC value before submitting";
+        $msg_error = "Please enter the DC value before submitting";
     }
 
     $tt_notes = "";
@@ -106,7 +106,7 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
     # Commented out - For testing only
     //echo "tt_val: ".$tt_val; echo "<br/>"; 
 
-    if(strlen($msgError) === 0){ // If no error, proceed
+    if(strlen($msg_error) === 0){ // If no error, proceed
 
         // -- Parse the input string --
 
@@ -187,7 +187,7 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
         } else {
             $tt_val_param3 = 0;
             if($tt_val_param1 === "DC"){
-                $msgError = "Parameter missing";
+                $msg_error = "Parameter missing";
             }
         }
         # Commented out - For testing only
@@ -204,7 +204,7 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
 
 
         # DB
-        if(strlen($msgError) === 0){
+        if(strlen($msg_error) === 0){
 
             // Curent Timestamp
             $now_timestamp = date("Y-m-d H:i:s");
@@ -425,7 +425,7 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
 
             }
             
-            $msgSuccess = "Saved successfully";
+            $msg_success = "Saved successfully";
         }
     } // End - If no error
 }
@@ -448,10 +448,10 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
                 <div class="row">
                 	<div id="msgdiv" style="height:30px;">
                     <p>
-                    <?php if(isset($msgError) && strlen($msgError) > 0 ) { ?>
-                    <div align="center" class="msgError"><strong><?php echo $msgError; ?></strong></div>
-                    <?php } else if(isset($msgSuccess) && strlen($msgSuccess) > 0 ) { ?>
-                    <div align="center" class="msgSuccess"><strong><?php echo $msgSuccess; ?></strong></div>
+                    <?php if(isset($msg_error) && strlen($msg_error) > 0 ) { ?>
+                    <div align="center" class="msg_error"><strong><?php echo $msg_error; ?></strong></div>
+                    <?php } else if(isset($msg_success) && strlen($msg_success) > 0 ) { ?>
+                    <div align="center" class="msg_success"><strong><?php echo $msg_success; ?></strong></div>
                     <?php } ?>
                     </p>
                     </div>
@@ -554,7 +554,7 @@ if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_p
 
 						</form>
 						
-                        <?php if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_postbk'] == 1) && (strlen($msgError) === 0)){ ?>
+                        <?php if(isset($_POST['tt_quick_entry_form_postbk']) && ($_POST['tt_quick_entry_form_postbk'] == 1) && (strlen($msg_error) === 0)){ ?>
                         <br/>
                         <div>
                             <strong>Submitted Value:</strong>

@@ -1,5 +1,8 @@
 <?php
 
+$msg_error = ""; // Clear Error Msg
+$msg_success = ""; // Clear Success Msg
+
 // Get User ID of logged in user
 $tt_user_uuid = get_tt_user_uuid();
 $tt_user_id = get_tt_user_id($tt_user_uuid);
@@ -41,10 +44,10 @@ $events_list = list_events($tt_baby_id, $tt_filter_date, $tt_filter_sort);
 
                 	<div id="msgdiv" style="height:30px;">
                     <p>
-                    <?php if(isset($msgError) && strlen($msgError) > 0 ) { ?>
-                    <div align="center" class="msgError"><strong><?php echo $msgError; ?></strong></div>
-                    <?php } else if(isset($msgSuccess) && strlen($msgSuccess) > 0 ) { ?>
-                    <div align="center" class="msgSuccess"><strong><?php echo $msgSuccess; ?></strong></div>
+                    <?php if(isset($msg_error) && strlen($msg_error) > 0 ) { ?>
+                    <div align="center" class="msg_error"><strong><?php echo $msg_error; ?></strong></div>
+                    <?php } else if(isset($msg_success) && strlen($msg_success) > 0 ) { ?>
+                    <div align="center" class="msg_success"><strong><?php echo $msg_success; ?></strong></div>
                     <?php } ?>
                     </p>
                     </div>
