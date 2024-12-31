@@ -1,0 +1,1 @@
+ALTER TABLE `tt_users` CHANGE `tt_name` `tt_password` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL; 

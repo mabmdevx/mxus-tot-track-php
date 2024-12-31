@@ -51,36 +51,48 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
 
             // Validations
             if( strlen($input_username)==0 || strlen($input_password)==0 ){
-                $msgError .="Please Provide Valid Username And Password";
+                $msgError = "Please provide valid Username and Password";
             }
 
             if(isset($msgError) && strlen($msgError)==0){ // If no error, proceed, else display error to user
-            
-                if( ($input_username === SYS_USER)  && ($input_password === SYS_PASS) ){
-                
-                    $login_check_flag = true;
-                    $_SESSION['username'] = $input_username;
-                    $_SESSION['tt_user_uuid'] = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
-                    $_SESSION['tt_baby_uuid'] = get_selected_baby_by_user_uuid($_SESSION['tt_user_uuid']);
 
-                    // When user logs in and checks "Remember Me"
-                    if ($input_remember_me === "1") {
+                // Look up the user with the username from the database
+                $known_user = find_user_by_username($input_username);
 
-                        //$tt_remember_me_token = generate_random_token(); // Generate a random token - for later
-                        $tt_remember_me_token = $tt_remember_me_token_val;
+                if ($known_user) {
 
-                        setcookie('tt_rm_token', $tt_remember_me_token, time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
-                        setcookie('tt_rm_username', $input_username, time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+                    $known_user_password_hash = $known_user['tt_password'];
 
-                        // Save User UUID and Baby UUID in the cookie for Remember Me
-                        setcookie('tt_rm_user_uuid', $_SESSION['tt_user_uuid'], time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
-                        setcookie('tt_rm_baby_uuid', $_SESSION['tt_baby_uuid'], time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+                    if(password_verification($input_password, $known_user_password_hash)){
+                    
+                        $login_check_flag = true;
+                        $_SESSION['username'] = $input_username;
+                        $_SESSION['tt_user_uuid'] = $known_user['tt_user_uuid'];
+                        $_SESSION['tt_baby_uuid'] = get_selected_baby_by_user_uuid($_SESSION['tt_user_uuid']);
 
-                        // Save $rm_token in the database linked to the user's account - for later
+
+                        // When user logs in and checks "Remember Me"
+                        if ($input_remember_me === "1") {
+
+                            //$tt_remember_me_token = generate_random_token(); // Generate a random token - for later
+                            $tt_remember_me_token = $tt_remember_me_token_val;
+
+                            setcookie('tt_rm_token', $tt_remember_me_token, time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+                            setcookie('tt_rm_username', $input_username, time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+
+                            // Save User UUID and Baby UUID in the cookie for Remember Me
+                            setcookie('tt_rm_user_uuid', $_SESSION['tt_user_uuid'], time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+                            setcookie('tt_rm_baby_uuid', $_SESSION['tt_baby_uuid'], time() + (30 * 24 * 3600)); // Set cookie to expire in 30 days
+
+                            // Save $rm_token in the database linked to the user's account - for later
+                        }
+
+                    } else {
+                        $msgError = "Invalid Password. Please try again.";
                     }
                 
                 } else {
-                    $msgError .="Please Provide Valid Username And Password";
+                    $msgError = "Please provide valid Username and Password.";
                 }
             
             }
@@ -123,10 +135,14 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
                                 <input id="remember_me" name="remember_me" type="checkbox" value="1">Remember Me
                             </label>
                         </div>
-                         <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                        <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                        
                     </fieldset>
                     <input name="checkloginpostbk" type="hidden" id="checkloginpostbk" value="1" />
                 </form>
+            </div>
+            <div class="panel-body">
+                <a href="?pg=signup" class="btn btn-lg btn-info btn-block">Signup</a>
             </div>
         </div>
         <footer class="navbar-default" style="margin-top:50px">

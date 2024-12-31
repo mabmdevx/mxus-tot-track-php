@@ -8,7 +8,7 @@ if(!isset($_GET['pg']))
 
 if(isset($_GET['pg']))
 {
-	if( !isset($_SESSION['username']) && isset($_GET['pg']) && ($_GET['pg']!="login") )
+	if( !isset($_SESSION['username']) && isset($_GET['pg']) && ($_GET['pg']!="login" && $_GET['pg']!="signup") )
 	{
 		header("Location: ".HOME_PAGE."?pg=login");
 		exit;

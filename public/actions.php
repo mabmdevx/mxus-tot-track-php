@@ -2,6 +2,10 @@
 
 switch($page)
 {
+    case "signup":
+    $pageRtn=include_once("pages/signup.php");
+    break;
+
     case "login":
     $pageRtn=include_once("pages/login.php");
     break;

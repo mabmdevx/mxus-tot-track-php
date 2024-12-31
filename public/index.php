@@ -68,7 +68,7 @@ if(isset($_GET['pg']) && strlen($_GET['pg'])>0 ){
 <body>
 
     <?php
-    if($page === "login"){
+    if( $page === "signup" || $page === "login" || $page === "logout") {
 
         include_once("actions.php");
 

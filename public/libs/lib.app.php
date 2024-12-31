@@ -720,6 +720,108 @@ function get_selected_baby_name($tt_baby_id){
 }
 
 
+function password_encryption($password){
+    return password_hash($password, PASSWORD_DEFAULT);
+}
+
+
+function password_verification($password_input, $password_hash){
+    return password_verify($password_input, $password_hash);
+}
+
+
+function user_signup($tt_username, $tt_password, $tt_baby_name){
+
+    global $pdo;
+
+    // Curent Timestamp
+    $now_timestamp = date("Y-m-d H:i:s");
+
+    // Check if user exists
+    //{
+    $stmt = $pdo->prepare("SELECT tt_user_id, tt_user_uuid, tt_username 
+                            FROM tt_users
+                            WHERE tt_username = :tt_username");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_username', $tt_username);
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result) && strlen($result['tt_user_id']) > 0){
+        // Return error - User already exists
+        return "ERROR_USER_ALREADY_EXISTS";
+    }
+    //}
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("INSERT INTO tt_users (tt_user_uuid, tt_username, tt_password, created_on, updated_on) 
+                            VALUES (:tt_user_uuid, :tt_username, :tt_password, :created_on, :updated_on)");
+
+    // Generate User UUID
+    $tt_new_user_uuid = generate_uuid();
+
+    // Bind parameters
+    $stmt->bindParam(':tt_user_uuid', $tt_new_user_uuid);
+    $stmt->bindParam(':tt_username', $tt_username);
+    $stmt->bindParam(':tt_password', $tt_password);
+    $stmt->bindParam(':created_on', $now_timestamp);
+    $stmt->bindParam(':updated_on', $now_timestamp);
+    $stmt->execute();
+
+    // Fetch the result - User ID
+    $tt_new_user_id = $pdo->lastInsertId();
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("INSERT INTO tt_babies (tt_baby_uuid, tt_baby_name, tt_user_id, tt_selected_baby_per_user, created_on, updated_on) 
+                            VALUES (:tt_baby_uuid, :tt_baby_name, :tt_user_id, :tt_selected_baby_per_user, :created_on, :updated_on)");
+
+    // Generate Baby UUID
+    $tt_new_baby_uuid = generate_uuid();
+
+    // Set the selected baby for this user
+    $tt_selected_baby_per_user = 1;
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_uuid', $tt_new_baby_uuid);
+    $stmt->bindParam(':tt_baby_name', $tt_baby_name);
+    $stmt->bindParam(':tt_user_id', $tt_new_user_id);
+    $stmt->bindParam(':tt_selected_baby_per_user', $tt_selected_baby_per_user);
+    $stmt->bindParam(':created_on', $now_timestamp);
+    $stmt->bindParam(':updated_on', $now_timestamp);
+    $stmt->execute();
+
+    return $tt_new_user_uuid;
+}
+
+
+function find_user_by_username($tt_username){
+
+    global $pdo;
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("SELECT tt_user_id, tt_user_uuid, tt_username, tt_password
+                            FROM tt_users
+                            WHERE tt_username = :tt_username");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_username', $tt_username);
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result)){
+        return $result;
+    }
+
+    return false;
+}
+
 # Table List
 # {
 # Events
