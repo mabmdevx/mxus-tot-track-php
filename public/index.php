@@ -84,7 +84,7 @@ if(isset($_GET['pg']) && strlen($_GET['pg'])>0 ){
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo HOME_PAGE; ?>?pg=dashboard"><?php echo SITE_TITLE; ?></a>
+                <a class="navbar-brand" href="<?php echo HOME_PAGE; ?>?pg=dashboard"><img src="assets/images/tot_track_logo_small.png" style="width:120px; height: 37px; margin-left: -10px; margin-top: -10px;" alt="<?php echo SITE_TITLE; ?> logo"/></a>
             </div>
             <!-- /.navbar-header -->
         

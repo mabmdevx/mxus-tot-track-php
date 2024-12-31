@@ -115,7 +115,7 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
 ?>
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-    	<h3 style="font-size:18px;text-align:center;padding-top:30px;"><strong><?php echo SITE_TITLE; ?></strong></h3>
+    	<h3 style="font-size:18px;text-align:center;padding-top:30px;"><strong><img src="assets/images/tot_track_logo.png" style="width:366px; height:89px;" alt="<?php echo SITE_TITLE; ?> logo"/></strong></h3>
         <div class="login-panel panel panel-default" style="margin-top:10% !important">
             <div class="panel-heading">
                 <h3 class="panel-title">Please Sign In</h3>
