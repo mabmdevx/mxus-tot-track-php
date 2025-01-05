@@ -51,6 +51,15 @@ $diaper_last_dc_type_txt = $last_diaper_change_stats_arr[1];
 # }
 
 
+# Last Poop Stats
+# {
+$last_poop_stats_arr = get_last_poop_stats($tt_baby_id);
+
+# Time since last poop
+$last_poop_timestamp_txt = $last_poop_stats_arr[0];
+$last_poop_diff_txt = $last_poop_stats_arr[1];
+# }
+
 # Stats for the day - Today
 # {
 # No. of feed sessions today
@@ -161,6 +170,14 @@ $feed_side_pc_right = $feed_side_pc_arr[1];
                             <ul style="margin-left:-10px">
                                 <li>Time since last diaper change: <b><?php echo $diaper_diff_txt; ?></b></li>
                                 <li>Last diaper change type: <b><?php echo $diaper_last_dc_type_txt; ?></b></li>
+                            </ul>
+                        </fieldset>
+                        <br/>
+                        <fieldset class="fieldset_custom">
+                            <legend class="fieldset_custom">Last poop</legend>
+                            <ul style="margin-left:-10px">
+                                <li>Last poop: <b><?php echo $last_poop_timestamp_txt; ?></b></li>
+                                <li>Time since last poop: <b><?php echo $last_poop_diff_txt; ?></b></li>
                             </ul>
                         </fieldset>
                         <br/>

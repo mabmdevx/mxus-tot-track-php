@@ -292,6 +292,60 @@ function get_last_diaper_change_stats($tt_baby_id){
 # }
 
 
+# Last poop stats
+# {
+ 
+function get_last_poop_stats($tt_baby_id){
+
+    $last_poop_stats_arr = array();
+    $last_poop_stats_arr[0] = "NA";
+    $last_poop_stats_arr[1] = "NA";
+
+    global $pdo;
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare("SELECT tt_es_time_start as last_poop_timestamp
+                            FROM tt_event_sessions 
+                            WHERE tt_es_id = (SELECT MAX(tt_es_id) 
+                                                FROM tt_event_sessions 
+                                                WHERE tt_es_type = 'DIAPER_CHANGE'
+                                                AND (tt_es_dc_type = 2 OR tt_es_dc_type = 3)
+                                                AND tt_baby_id = :tt_baby_id)");
+
+    // Bind parameters
+    $stmt->bindParam(':tt_baby_id', $tt_baby_id);
+    $stmt->execute();
+
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get the value
+    if(isset($result) && $result !== false){
+
+        $last_poop_timestamp = $result['last_poop_timestamp'];
+
+        $last_poop_datetime = new DateTime($last_poop_timestamp);
+        $now_datetime = new DateTime();
+        $last_poop_interval = $now_datetime->diff($last_poop_datetime);
+
+        $last_poop_days = $last_poop_interval->d;
+        $last_poop_hours = $last_poop_interval->h;
+        $last_poop_minutes = $last_poop_interval->i;
+
+        $last_poop_diff_txt = "$last_poop_days day(s), $last_poop_hours hour(s), $last_poop_minutes minute(s)";
+
+        $last_poop_stats_arr = array();
+        $last_poop_stats_arr[0] = date("Y-m-d H:i:s", strtotime($result['last_poop_timestamp']));
+        $last_poop_stats_arr[1] = $last_poop_diff_txt;
+        
+    }
+
+    return $last_poop_stats_arr;
+
+}
+
+# }
+
 # Stats for the day
 # {
 function get_count_of_feed_sessions_for_date($tt_baby_id, $date){
