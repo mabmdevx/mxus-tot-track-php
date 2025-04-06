@@ -83,53 +83,54 @@ $events_list = list_events($tt_baby_id, $tt_filter_date, $tt_filter_sort);
 						</form>
 
                         <br/><br/>
-
-                        <table class="table table-striped table-bordered table-hover" style="margin-bottom:0px;">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Event ID</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Raw Value</th>
-                                    <th>Parsed Value</th>
-                                    <th>Notes</th>        
-                                    <th>Created On</th>
-                                    <th>Updated On</th>                        
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            if(isset($events_list) && $events_list!=false && count($events_list)>0)
-                            {
-                                for($k=0;$k<count($events_list);$k++)
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" style="margin-bottom:0px;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Event ID</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Raw Value</th>
+                                        <th>Parsed Value</th>
+                                        <th>Notes</th>        
+                                        <th>Created On</th>
+                                        <th>Updated On</th>                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if(isset($events_list) && $events_list!=false && count($events_list)>0)
                                 {
-                            ?>
-                                <tr style="<?php echo row_color_events(htmlentities($events_list[$k]['tt_event_val_raw'])); ?>">
-                                    <td><?php echo $k+1; ?></td>
-                                    <td><?php echo htmlentities($events_list[$k]['tt_event_id']); ?></td>
-                                    <td><?php echo htmlentities($events_list[$k]['tt_event_date']); ?></td>
-                                    <td><?php echo htmlentities($events_list[$k]['tt_event_time']); ?></td>
-                                    <td><?php echo htmlentities($events_list[$k]['tt_event_val_raw']); ?></td>
-                                    <td><?php echo htmlentities($events_list[$k]['tt_event_val_parsed']); ?></td>
-                                    <td><?php echo htmlentities($events_list[$k]['tt_event_notes']); ?></td>
-                                    <td><?php echo htmlentities($events_list[$k]['created_on']); ?></td>
-                                    <td><?php echo htmlentities($events_list[$k]['updated_on']); ?></td>
-                                </tr>
-                            <?php
+                                    for($k=0;$k<count($events_list);$k++)
+                                    {
+                                ?>
+                                    <tr style="<?php echo row_color_events(htmlentities($events_list[$k]['tt_event_val_raw'])); ?>">
+                                        <td><?php echo $k+1; ?></td>
+                                        <td><?php echo htmlentities($events_list[$k]['tt_event_id']); ?></td>
+                                        <td><?php echo htmlentities($events_list[$k]['tt_event_date']); ?></td>
+                                        <td><?php echo htmlentities($events_list[$k]['tt_event_time']); ?></td>
+                                        <td><?php echo htmlentities($events_list[$k]['tt_event_val_raw']); ?></td>
+                                        <td><?php echo htmlentities($events_list[$k]['tt_event_val_parsed']); ?></td>
+                                        <td><?php echo htmlentities($events_list[$k]['tt_event_notes']); ?></td>
+                                        <td><?php echo htmlentities($events_list[$k]['created_on']); ?></td>
+                                        <td><?php echo htmlentities($events_list[$k]['updated_on']); ?></td>
+                                    </tr>
+                                <?php
+                                    }
                                 }
-                            }
-                            else
-                            {
-                            ?>
-                            <tr>
-                                <td colspan="9" style="text-align:center">No Data Available</td>                                
-                                </tr>
-                            <?php
-                            }
-                            ?>
-                            </tbody>
-                        </table> 
+                                else
+                                {
+                                ?>
+                                <tr>
+                                    <td colspan="9" style="text-align:center">No Data Available</td>                                
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                                </tbody>
+                            </table> 
+                        </div>
                         <br/><br/>
                     </div>
                     <!-- /.col-lg-12 (nested) -->

@@ -87,46 +87,48 @@ $babies_list = list_babies($tt_user_id);
 					
                     <div class="col-lg-12">
                         <form role="form" class="form-inline" id="tt_form_save_selected_baby" name="tt_form_save_selected_baby" method="POST">
+                        <div class="table-responsive">    
                             <table class="table table-striped table-bordered table-hover" style="margin-bottom:0px;">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Baby Name</th>
-                                        <!--<th>Baby ID</th>-->
-                                        <th style="text-align:center">Selected Baby</th>          
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                if(isset($babies_list) && $babies_list!=false && count($babies_list)>0)
-                                {
-                                    for($k=0;$k<count($babies_list);$k++)
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Baby Name</th>
+                                            <!--<th>Baby ID</th>-->
+                                            <th style="text-align:center">Selected Baby</th>          
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    if(isset($babies_list) && $babies_list!=false && count($babies_list)>0)
                                     {
-                                ?>
-                                    <tr>
-                                        <td><?php echo $k+1; ?></td>
-                                        <td><?php echo htmlentities($babies_list[$k]['tt_baby_name']); ?></td>
-                                        <!--<td><?php echo htmlentities($babies_list[$k]['tt_baby_uuid']); ?></td>-->
-                                        <td style="text-align:center">
-                                            <input type="radio" id="tt_selected_baby_uuid_per_user<?php echo $k+1; ?>" name="tt_selected_baby_uuid_per_user" 
-                                                value="<?php echo htmlentities($babies_list[$k]['tt_baby_uuid']); ?>" 
-                                                <?php if($babies_list[$k]['tt_selected_baby_per_user'] == 1) { ?> checked="checked" <?php } ?>>
-                                        </td>
-                                    </tr>
-                                <?php
+                                        for($k=0;$k<count($babies_list);$k++)
+                                        {
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $k+1; ?></td>
+                                            <td><?php echo htmlentities($babies_list[$k]['tt_baby_name']); ?></td>
+                                            <!--<td><?php echo htmlentities($babies_list[$k]['tt_baby_uuid']); ?></td>-->
+                                            <td style="text-align:center">
+                                                <input type="radio" id="tt_selected_baby_uuid_per_user<?php echo $k+1; ?>" name="tt_selected_baby_uuid_per_user" 
+                                                    value="<?php echo htmlentities($babies_list[$k]['tt_baby_uuid']); ?>" 
+                                                    <?php if($babies_list[$k]['tt_selected_baby_per_user'] == 1) { ?> checked="checked" <?php } ?>>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                ?>
-                                <tr>
-                                    <td colspan="4" style="text-align:center">No Data Available</td>                                
-                                    </tr>
-                                <?php
-                                }
-                                ?>
-                                </tbody>
-                            </table>
+                                    else
+                                    {
+                                    ?>
+                                    <tr>
+                                        <td colspan="4" style="text-align:center">No Data Available</td>                                
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
 
                             <br/><br/>
 
