@@ -81,62 +81,64 @@ $sessions_list = list_event_sessions($tt_baby_id, $tt_filter_date, $tt_filter_so
 
                         <br/><br/>
 
-                        <table class="table table-striped table-bordered table-hover" style="margin-bottom:0px;">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Session ID</th>
-                                    <th>Start Event ID</th>
-                                    <th>Stop Event ID</th>
-                                    <th>Date</th>
-                                    <th>Type</th> 
-                                    <th>Time Start</th> 
-                                    <th>Time End</th> 
-                                    <th>Duration</th> 
-                                    <th>Feed Side</th> 
-                                    <th>Self Detach</th> 
-                                    <th>DC Type</th>
-                                    <th>Created On</th>
-                                    <th>Updated On</th>                        
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            if(isset($sessions_list) && $sessions_list!=false && count($sessions_list)>0)
-                            {
-                                for($k=0;$k<count($sessions_list);$k++)
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" style="margin-bottom:0px;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Session ID</th>
+                                        <th>Start Event ID</th>
+                                        <th>Stop Event ID</th>
+                                        <th>Date</th>
+                                        <th>Type</th> 
+                                        <th>Time Start</th> 
+                                        <th>Time End</th> 
+                                        <th>Duration</th> 
+                                        <th>Feed Side</th> 
+                                        <th>Self Detach</th> 
+                                        <th>DC Type</th>
+                                        <th>Created On</th>
+                                        <th>Updated On</th>                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if(isset($sessions_list) && $sessions_list!=false && count($sessions_list)>0)
                                 {
-                            ?>
-                                <tr style="<?php echo row_color_sessions(htmlentities($sessions_list[$k]['tt_es_type'])); ?>">
-                                    <td><?php echo $k+1; ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_id']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_event_id_start']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_event_id_end']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_date']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_type']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_time_start']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_time_end']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_time_duration']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_feed_side']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_feed_self_detach']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['tt_es_dc_type']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['created_on']); ?></td>
-                                    <td><?php echo htmlentities($sessions_list[$k]['updated_on']); ?></td>
-                                </tr>
-                            <?php
+                                    for($k=0;$k<count($sessions_list);$k++)
+                                    {
+                                ?>
+                                    <tr style="<?php echo row_color_sessions(htmlentities($sessions_list[$k]['tt_es_type'])); ?>">
+                                        <td><?php echo $k+1; ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_id']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_event_id_start']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_event_id_end']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_date']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_type']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_time_start']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_time_end']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_time_duration']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_feed_side']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_feed_self_detach']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['tt_es_dc_type']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['created_on']); ?></td>
+                                        <td><?php echo htmlentities($sessions_list[$k]['updated_on']); ?></td>
+                                    </tr>
+                                <?php
+                                    }
                                 }
-                            }
-                            else
-                            {
-                            ?>
-                            <tr>
-                                <td colspan="14" style="text-align:center">No Data Available</td>                                
-                                </tr>
-                            <?php
-                            }
-                            ?>
-                            </tbody>
-                        </table> 
+                                else
+                                {
+                                ?>
+                                <tr>
+                                    <td colspan="14" style="text-align:center">No Data Available</td>                                
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
                         <br/><br/>
                     </div>
                     <!-- /.col-lg-12 (nested) -->

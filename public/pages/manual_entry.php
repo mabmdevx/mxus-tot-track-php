@@ -393,11 +393,10 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Manual Entry</h1>
+        <h2 class="page-header">Manual Entry</h2>
     </div>
-    <!-- /.col-lg-12 -->
 </div>
-<!-- /.row -->
+
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -406,43 +405,53 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
             </div>
             <div class="panel-body">
                 <div class="row">
-                	<div id="msgdiv" style="height:30px;">
-                    <p>
-                    <?php if(isset($msg_error) && strlen($msg_error) > 0 ) { ?>
-                    <div align="center" class="msg_error"><strong><?php echo $msg_error; ?></strong></div>
-                    <?php } else if(isset($msg_success) && strlen($msg_success) > 0 ) { ?>
-                    <div align="center" class="msg_success"><strong><?php echo $msg_success; ?></strong></div>
-                    <?php } ?>
-                    </p>
+
+                    <div id="msgdiv" style="height:30px;">
+                        <p>
+                        <?php if(isset($msg_error) && strlen($msg_error) > 0 ) { ?>
+                        <div align="center" class="msg_error"><strong><?php echo $msg_error; ?></strong></div>
+                        <?php } else if(isset($msg_success) && strlen($msg_success) > 0 ) { ?>
+                        <div align="center" class="msg_success"><strong><?php echo $msg_success; ?></strong></div>
+                        <?php } ?>
+                        </p>
                     </div>
-					<div class="col-lg-4"></div>
-                    <div class="col-lg-4">
+
+                    <div class="col-lg-6">
 						
-						<form role="form" class="form-inline" id="manual_entry_form" name="manual_entry_form" method="POST" >	
+						<form role="form" id="manual_entry_form" name="manual_entry_form" method="POST">	
     
                             <div class="form-group">
-                                <label>Selected Baby : </label>&nbsp;<?php echo get_selected_baby_name($tt_baby_id); ?>
+                                <label class="form-label">Selected Baby:</label>
+                                <input type="text" id="selected_baby" name="selected_baby" class="form-control" 
+                                    value="<?php echo get_selected_baby_name($tt_baby_id); ?>" 
+                                    placeholder="Selected Baby" disabled="disabled">
                             </div>
-                            <br/>
+                            
                             <div class="form-group">
-                                <label>Event Value :</label>
+                                <label>Event Value:</label>
                                 <input id="tt_val" name="tt_val" class="form-control" type="text" placeholder="<keyword> <time> <ext1>" value="">
                             </div>
-                            <br/>
+                           
                             <div class="form-group">
-                                <label>Notes :</label>
+                                <label>Notes:</label>
                                 <input id="tt_notes" name="tt_notes" class="form-control" type="text" value="">
                             </div>
+
                             <br/><br/>
+
+                            <!-- Hidden field for POST action type -->
+                            <input id="tt_manual_entry_form_postbk" name="tt_manual_entry_form_postbk" type="hidden" value="1" />
+
                             <div class="form-group">
-                                <input id="tt_manual_entry_form_postbk" name="tt_manual_entry_form_postbk" type="hidden" value="1" />
-                                <button type="submit" class="btn btn-default">Save</button>
+                                <!-- Submit and Reset Buttons -->
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
                             </div>
 
 						</form>
 						
                         <?php if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form_postbk'] == 1) && (strlen($msg_error) === 0)){ ?>
-                        <br/>
+                        <hr/>
                         <div>
                             <strong>Submitted Value:</strong>
                             <ul>
@@ -453,35 +462,42 @@ if(isset($_POST['tt_manual_entry_form_postbk']) && ($_POST['tt_manual_entry_form
                         </div>
                         <?php } ?>
         
-                        <br/>
                         <hr/>
-                        <div>
-                            <strong>Possible values:</strong>
-                            <ul>
-                                <li>Param 1: { FL / FR / SD / STOP / DC / SP1 / SP0 }</li>
-                                <li>Param 2: { NOW / time }</li>
-                                <li>Param 3: { 1 / 2 / 3 }</li>
-                            </ul>
-                            <strong>Examples:</strong>
-                            <ul>
-                                <li>FL NOW</li>
-                                <li>FL 14:05</li>
-                                <li>FR 14:10</li>
-                                <li>SD 14:25</li>
-                                <li>STOP 14:25</li>
-                                <li>DC NOW 1</li>
-                                <li>DC 14:30 1</li>
-                                <li>DC 14:30 2</li>
-                                <li>DC 14:30 3</li>
-                                <li>SP1 NOW</li>
-                                <li>SP0 NOW</li>
-                            </ul>
-                        </div>
+                        
+                    </div><!-- /.col-lg-6 (nested) -->
 
-                    </div><!-- /.col-lg-4 (nested) -->
-                    <div class="col-lg-4"></div>
-                    <!-- /.col-lg-4 (nested) -->
-					<br/>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Possible values:</strong>
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+                                    <li>Param 1: { FL / FR / SD / STOP / DC / SP1 / SP0 }</li>
+                                    <li>Param 2: { NOW / time }</li>
+                                    <li>Param 3: { 1 / 2 / 3 }</li>
+                                </ul>
+                                <strong>Examples:</strong>
+                                <ul>
+                                    <li>FL NOW</li>
+                                    <li>FL 14:05</li>
+                                    <li>FR 14:10</li>
+                                    <li>SD 14:25</li>
+                                    <li>STOP 14:25</li>
+                                    <li>DC NOW 1</li>
+                                    <li>DC 14:30 1</li>
+                                    <li>DC 14:30 2</li>
+                                    <li>DC 14:30 3</li>
+                                    <li>SP1 NOW</li>
+                                    <li>SP0 NOW</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-6 (nested) -->
+
+                    <br/>
+
                 </div>
                 <!-- /.row (nested) -->
             </div>
