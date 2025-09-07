@@ -150,7 +150,7 @@ if(isset($_POST['checkloginpostbk']) && ($_POST['checkloginpostbk']==1) )
         <footer class="navbar-default" style="margin-top:50px">
             <div>
                 <div class="row">
-                    <div style="margin:0 auto; text-align:center">TotTrack by <a href="https://webserve.xyz" target="_blank">WebServe</a></div>
+                    <div style="margin:0 auto; text-align:center">&copy; <?php echo date("Y"); ?> TotTrack by <a href="https://webserve.xyz" target="_blank">WebServe</a></div>
                 </div>
             </div>
         </footer>

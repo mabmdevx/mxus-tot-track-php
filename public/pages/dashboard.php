@@ -143,7 +143,11 @@ $feed_side_pc_right = $feed_side_pc_arr[1];
                 <div class="row">
                     <div class="col-lg-12">
 
-                        <div style="margin-left:15px; margin-bottom:5px"><label>Selected Baby : </label>&nbsp;<?php echo get_selected_baby_name($tt_baby_id); ?></div>
+                        <div style="margin-left:-15px; margin-bottom:5px">
+                            <ul>
+                                <li><label>Selected Baby : </label>&nbsp;<?php echo get_selected_baby_name($tt_baby_id); ?></li>
+                            </ul>
+                        </div>
 
                         <fieldset class="fieldset_custom">
                             <legend class="fieldset_custom">Last feed</legend>

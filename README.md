@@ -1,18 +1,9 @@
 # Tot Track
-
-## Description
-- Tot Track - A baby care journal and analytics webapp written in PHP.
-- Track feedings, diaper changes and sleep.
-- Get analytics from the data entered.
-
-## Tech Stack
-- Tech Stack: PHP, MySQL, HTML, CSS, JS, Bootstrap, Apache 
-- WebApp Architecture: Postback
-- Tool/Services Used:
-    - Statcounter
-    - Backblaze
+Tot Track - A baby care journal and analytics webapp written in PHP.
 
 ## Features
+- Track feedings, diaper changes and sleep.
+- Get analytics from the data entered.
 - Authentication and Session management
 - Login "Remember Me" feature to avoid the hassle of repetitive login
 - Bootstrap theme
@@ -20,10 +11,13 @@
 - DB backup: Automated MySQL DB backup to B2
 - DB backup: Cleanup script to delete files on B2 that are older than 30 days
 
-## Notes
-- Currently only supports managing data for one baby.
-- Coming soon: Support for multiple babies.
-
+## Tech Stack
+- Tech Stack: PHP, Bootstrap, HTML, CSS, JS
+- Database: MySQL
+- WebApp Architecture: Postback
+- Tool/Services Used:
+    - Statcounter
+    - Backblaze
 
 ## Dev Environment Setup
 
@@ -55,8 +49,6 @@ C:\wamp64\www\tot_track\
     SITE_SHORT_NAME = Tot-Track
     HOME_PAGE       = index.php
     TIMEZONE        = America/Los_Angeles
-    SYS_USER        = user1
-    SYS_PASS        = xyz
 
     [database]
     DB_HOST     = localhost

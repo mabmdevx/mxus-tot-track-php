@@ -21,10 +21,6 @@ define("HOME_PAGE", $config_app['HOME_PAGE']);
 ## Timezone
 date_default_timezone_set($config_app['TIMEZONE']);
 
-## Account
-define("SYS_USER", $config_app['SYS_USER']);
-define("SYS_PASS", $config_app['SYS_PASS']);
-
 ## Statcounter
 define("STATCOUNTER_PROJECT", $config_app['STATCOUNTER_PROJECT']);
 define("STATCOUNTER_SECURITY", $config_app['STATCOUNTER_SECURITY']);
@@ -57,7 +53,7 @@ if(isset($_GET['pg']) && strlen($_GET['pg'])>0 ){
 
     <!-- Core CSS - Include with every page -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- SB Admin CSS - Include with every page -->
     <link href="assets/css/sb-admin.css" rel="stylesheet">
@@ -146,7 +142,7 @@ if(isset($_GET['pg']) && strlen($_GET['pg'])>0 ){
         <footer class="navbar-default" style="float:right; margin:20px">
             <div>
                 <div class="row">
-                    <div class="col-lg-12">TotTrack by <a href="https://webserve.xyz" target="_blank">WebServe</a></div>
+                    <div class="col-lg-12">&copy; <?php echo date("Y"); ?> TotTrack by <a href="https://webserve.xyz" target="_blank">WebServe</a></div>
                 </div>
             </div>
         </footer>
@@ -161,10 +157,6 @@ if(isset($_GET['pg']) && strlen($_GET['pg'])>0 ){
     <!-- Core Scripts - Include with every page -->
     <script src="assets/js/jquery-1.10.2.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-
-    <!-- SB Admin Scripts - Include with every page -->
-    <script src="assets/js/sb-admin.js"></script>
 
     <!-- Default Statcounter code for Tot Track
     https://tottrack.webserve.xyz -->

@@ -3,8 +3,6 @@ SITE_TITLE      = Tot Track
 SITE_SHORT_NAME = Tot-Track
 HOME_PAGE       = index.php
 TIMEZONE        = America/Los_Angeles
-SYS_USER        = user1
-SYS_PASS        = xyz
 
 [database]
 DB_HOST     = localhost
