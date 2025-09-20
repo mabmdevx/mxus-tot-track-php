@@ -290,3 +290,10 @@ crontab -e
 # DB Backup: B2 bucket - Cleanup files older than 30 days
 10 0 * * * /opt/scripts/mysql_backup/b2_cleanup_tot_track.sh
 ```
+
+
+<img
+class="statcounter"
+src="https://c.statcounter.com/13168255/0/b33e3867/1/"
+alt="Web Analytics"
+/>
